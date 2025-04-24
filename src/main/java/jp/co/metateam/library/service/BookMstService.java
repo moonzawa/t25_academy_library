@@ -24,6 +24,10 @@ public class BookMstService {
     public BookMstService(BookMstRepository bookMstRepository){
         this.bookMstRepository = bookMstRepository;
     }
+
+    public BookMst selectByIsbn(String isbn) {
+        return bookMstRepository.selectByIsbn(isbn);
+    }
     
     public List<BookMstDto> findAvailableWithStockCount() {
         List<BookMst> books = this.bookMstRepository.findLimitedBook();
@@ -42,7 +46,18 @@ public class BookMstService {
 
         return bookMstDtoList;
     }
-    
+    @Transactional
+    public void save(BookMstDto bookMstDto){
+
+    BookMst bookMst = new BookMst();
+
+    bookMst.setIsbn(bookMstDto.getIsbn());
+    bookMst.setTitle(bookMstDto.getTitle());
+
+        this.bookMstRepository.save(bookMst);
+
+    }
+
 }
 
 
